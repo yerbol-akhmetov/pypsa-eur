@@ -1830,20 +1830,22 @@ def add_heat(n, costs):
                 lifetime=costs.at[name_type + " water tank storage", "lifetime"],
             )
 
-        if options["boilers"]:
-            key = f"{name_type} resistive heater"
+        key = f"{name_type} resistive heater"
 
-            n.madd(
-                "Link",
-                nodes[name] + f" {name} resistive heater",
-                bus0=nodes[name],
-                bus1=nodes[name] + f" {name} heat",
-                carrier=name + " resistive heater",
-                efficiency=costs.at[key, "efficiency"],
-                capital_cost=costs.at[key, "efficiency"] * costs.at[key, "fixed"],
-                p_nom_extendable=True,
-                lifetime=costs.at[key, "lifetime"],
-            )
+        n.madd(
+            "Link",
+            nodes[name] + f" {name} resistive heater",
+            bus0=nodes[name],
+            bus1=nodes[name] + f" {name} heat",
+            carrier=name + " resistive heater",
+            efficiency=costs.at[key, "efficiency"],
+            capital_cost=costs.at[key, "efficiency"] * costs.at[key, "fixed"],
+            p_nom_extendable=True,
+            lifetime=costs.at[key, "lifetime"],
+        )
+
+        if options["boilers"]:
+
 
             key = f"{name_type} gas boiler"
 
@@ -3400,8 +3402,8 @@ if __name__ == "__main__":
     if "I" in opts:
         add_industry(n, costs)
 
-    if "I" in opts and "H" in opts:
-        add_waste_heat(n)
+    # if "I" in opts and "H" in opts:
+    add_waste_heat(n)
 
     if "A" in opts:  # requires H and I
         add_agriculture(n, costs)
